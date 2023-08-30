@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrador de Pago</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+    <style>
+        .dataTables_wrapper .dataTables_filter {
+            float: right;
+            text-align: right;
+        }
+        .nav-link{
+            color:#000;
+        }
+        .nav-link:hover{
+            color:#000;
+        }
+    </style>
+</head>
+<body>
+    <div class="registradorPagoContainer mx-auto mt-5 px-3">
+        <input type="text"id="id_planillaOculta" value="<%= results[0].id %>" style="display:none;">
+        <h3>Nombre de Planilla: <%= results[0].nombrePlanilla %></h3>
+        <button href="" class="btn btn-primary" style="float:right; margin-right:10px" 
+        data-bs-toggle="modal" data-bs-target="#nuevoRegistroPago">Nuevo Registro de Pago</button>
+
+        <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" 
+              data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Planilla Detallada</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" 
+              data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Planilla Consolidada</button>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active px-3" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                <div class="table-responsive">
+                    <table id="planillaDetalleTable" class="display table table-striped" style="width:100%; overflow-y: auto;">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>N° OF. URH</th>
+                                <th>Meta/Of. Circ</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Apellido Nombres</th>
+                                <th>Fecha Desde</th>
+                                <th>Fecha Hasta</th>
+                                <th>Cargo/Curso/Dia y Hora del Serv.</th>
+                                <th>Monto Bruto</th>
+                                <th>Dscto. 5ta Cat.</th>
+                                <th>Monto Abonar</th>
+                                <th>Fecha de Registro</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyRegistrosPagosDetallado" style="width:100%;">
+                            
+                        
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade px-3" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <div class="table-responsive">
+                    <table id="planillaConsolidadoTable" class="display table table-striped" style="width:100%; overflow-y: auto;">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombres</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Monto Bruto</th>
+                                <th>Dscto 5ta.</th>
+                                <th>Monto a Abonar</th>
+                        </thead>
+                        <tbody id="bodyRegistrosPagosConsolidado" style="width:100%;">
+                            
+                        
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+     <!-- Modales -->
+    <div class="modal fade" id="nuevoRegistroPago" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="">Nueva Registro de Pago</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+            <h4 class="text-center mb-3">REGISTRAR DATOS DE PLANILLA - RESCPS</h4>
+            <form onsubmit="guardarRegistroPago(event)">
+                <div class="form-group row justify-content-center">
+                    <div class="col-sm-6">
+                        <label for="inputNOFICURH">N° Ofic-URH:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputNOFICURH" required>
+
+                        <label for="inputFACDEP">FAC./Dep:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputFACDEP" required>
+
+                        <div class="form-group row">
+                            <div class="col-sm-7">
+                                <label for="inputRegimenLaboral2">Régimen Laboral:</label>
+                                <select class="form-select mb-3"
+                                id="inputRegimenLaboral2" onchange="onChangeRegimenLaboral2()">
+                                        <option value="0">-Seleccione-</option>
+                                    <% for (let regimenLaboral in regimenLaboralList){ %>
+                                        <option value="<%= regimenLaboralList[regimenLaboral].idRL %>">
+                                            <%= regimenLaboralList[regimenLaboral].nombreRL %>
+                                        </option>
+                                    <% }%>
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="inputCodigo2">Código:</label>
+                                <input type="text" class="form-control mb-3"
+                                id="inputCodigo2" readonly required>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="form-group row mb-3">
+                            <label for="">Periodo a Pagar</label>
+                            <div class="col-sm-6">
+                                <label for="">Desde</label>
+                                <input type="date" class="form-control w-100"
+                                id="inputPeriodoPagoDesde" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="">Hasta</label>
+                                <input type="date" class="form-control w-100"
+                                id="inputPeriodoPagoHasta" required>
+                            </div>
+                        </div>
+
+                        <label for="inputSIAF">SIAF:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputSIAF" required>
+
+                        <div class="form-group row mt-3">
+                            <div class="col-sm-6">
+                                <label for="inputMontoBruto">Monto Bruto:</label>
+                                <input type="text" class="form-control mb-3"
+                                id="inputMontoBruto" onchange="onChangeMontoBruto()" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="inputDscto5ta">Dscto. 5ta:</label>
+                                <input type="text" class="form-control mb-3"
+                                id="inputDscto5ta">
+                            </div>
+                        </div>
+
+                        
+
+                        <label for="inputMontoAbonar">Monto a Abonar:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputMontoAbonar">
+
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputNOFICFAC">N° Ofic. Fac:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputNOFICFAC" required>
+
+                        <label for="inputMeta">Meta/Of. Circ:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputMeta" required>
+
+                        <label for="inputNum">N°:</label>
+                        <input type="text" class="form-control mb-3"
+                        id="inputNum">
+
+                        <label for="inputApeYNom">Apellidos y Nombres:</label>
+                        <select name="inputApeYNom" class="form-control mb-3" id="inputApeYNom"
+                        onchange="onChangeApeYNOM()"></select>
+
+                        <label for="inputDetalle">Cargo/Cursos/Indicador Dia y Hora del servicio:</label>
+                        <textarea name="" id="inputDetalle" cols="30" rows="5" class="form-control mb-3"></textarea>
+
+
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DataTables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Datable Export -->
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.6/b-2.4.1/b-html5-2.4.1/datatables.js"></script>
+
+    <script>
+        cargarRegistrosPagosDetallado();
+        cargarRegistrosPagosConsolidado();
+    </script>
+</body>
+</html>

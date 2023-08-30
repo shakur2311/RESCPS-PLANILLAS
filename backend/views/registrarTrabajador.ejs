@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTRAR TRABAJADOR</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="registrarTrabajadorContainer" class="mx-auto w-50" style="margin-top:100px;">
+        <h2>REGISTRAR TRABAJADOR</h2>
+        <form action="" onsubmit="guardarTrabajador(event)">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label for="inputRegimenLaboral" class="mb-1">Régimen Laboral</label>
+                    <select name="inputRegimenLaboral" id="inputRegimenLaboral" class="form-select" onchange="onChangeRegimenLaboral()" required>
+                        <option value="0">--SELECCIONE--</option>
+                        <% for (let x in regimenlaboral) { %>
+                            <option value="<%= regimenlaboral[x].idRL %>"><%= regimenlaboral[x].nombreRL %></option>
+                        <% } %>    
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row my-3">
+                <div class="col-sm-2">
+                    <label for="inputCodigo" class="mb-1">Código</label>
+                    <input type="text" class="form-control" id="inputCodigo" name="inputCodigo" maxlength="6" minlength="6" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <label for="inputApepat" class="mb-1">Ape. Paterno</label>
+                    <input type="text" class="form-control" id="inputApepat" name="inputApepat" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <label for="inputApemat" class="mb-1">Ape. Materno</label>
+                    <input type="text" class="form-control" id="inputApemat" name="inputApemat" required>
+                </div>
+
+                <div class="col-sm-4">
+                    <label for="inputNombres" class="mb-1">Nombres</label>
+                    <input type="text" class="form-control" id="inputNombres" name="inputNombres" required>
+                </div>
+            </div>
+
+            
+            <div class="form-group row my-3">
+                <div class="col-sm-4">
+                    <label for="inputCondicionLaboral" class="mb-1">Condición Laboral</label>
+                    <select name="inputCondicionLaboral" id="inputCondicionLaboral" class="form-select" onchange="onChangeCondicionLaboral()" required >
+                        <option value="0">--SELECCIONE--</option>
+                        <% for (let x in condicionlaboral) { %>
+                            <option id="<%= condicionlaboral[x].idCL %>" value="<%= condicionlaboral[x].idCL %>"><%= condicionlaboral[x].nombreCL %></option>
+                        <% } %>  
+                    </select>
+                </div>
+
+                <div class="col-sm-4" style="display:none;" id="nivelRemunerativoContainer">
+                    <label for="inputNivelRemunerativo" class="mb-1">Nivel Remunerativo</label>
+                    <select name="inputNivelRemunerativo" id="inputNivelRemunerativo" class="form-select" onchange="onChangeNivelRemunerativo()" required>
+                        <option value="0">--SELECCIONE--</option>
+                        <% for (let x in nivelremunerativo) { %>
+                            <option value="<%= nivelremunerativo[x].idNR %>"><%= nivelremunerativo[x].nombreNR %></option>
+                        <% } %>  
+                    </select>
+                </div>
+
+                <div class="col-sm-4" style="display:none;" id="categoriaContainer">
+                    <label for="inputCategoria" class="mb-1">Categoría</label>
+                    <select name="inputCategoria" id="inputCategoria" class="form-select" required>
+                        <option value="0">--SELECCIONE--</option>
+                        <% for (let x in categoria) { %>
+                            <option value="<%= categoria[x].idCategoria %>"><%= categoria[x].nombreCategoria %></option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            
+            <div class="form-group row my-3">
+                <div class="col-sm-5" style="display:none;" id="dedicacionContainer">
+                    <label for="inputDedicacion" class="mb-1">Dedicación</label>
+                    <select name="inputDedicacion" id="inputDedicacion" class="form-select" required>
+                        <option value="0">--SELECCIONE--</option>
+                        <option value="DEDICACIÓN EXCLUSIVA">DEDICACIÓN EXCLUSIVA</option>
+                        <option value="TIEMPO COMPLETO">TIEMPO COMPLETO</option>
+                        <option value="TIEMPO PARCIAL">TIEMPO PARCIAL</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-3">
+                    <label for="inputSueldoBruto" class="mb-1">Sueldo Bruto</label>
+                    <input type="text" class="form-control" id="inputSueldoBruto" name="inputSueldoBruto" placeholder="S/." required>
+                </div>
+
+                <div class="col-sm-4" style="display:none;" id="categoria1Container">
+                    <label for="inputCategoria1" class="mb-1">Categoria</label>
+                    <select name="inputCategoria1" id="inputCategoria1" class="form-select" required>
+                        <option value="0">--SELECCIONE--</option>
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="A3">A3</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="B3">B3</option>
+                    </select>
+                </div>
+            </div>
+
+            
+            <div class="form-group row my-3">
+                <div class="col-sm-4" style="display:none;" id="nivelRemunerativo1Container">
+                    <label for="inputNivelRemunerativo1" class="mb-1">Nivel Remunerativo</label>
+                    <select name="inputNivelRemunerativo1" id="inputNivelRemunerativo1" class="form-select" required>
+                        <option value="0">--SELECCIONE--</option>
+                        <option value="AUXILIAR">AUXILIAR</option>
+                        <option value="FUNCIONARIO">FUNCIONARIO</option>
+                        <option value="PROFESIONAL">PROFESIONAL</option>
+                        <option value="TÉCNICO">TÉCNICO</option>
+                    </select>
+                </div>
+                <div class="col-sm-2" style="display:none;" id="categoria2Container">
+                    <label for="inputCategoria2" class="mb-1">Categoria</label>
+                    <select name="inputCategoria2" id="inputCategoria2" class="form-select" required>
+                        <option value="0">--</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+            </div>
+            
+
+        
+            <div class="botones w-50 mx-auto d-flex justify-content-center mt-5">
+                <a class="btn btn-danger" style="margin-right:10px;" href="/index">ATRÁS</a>
+                <button class="btn btn-primary" type="submit">GUARDAR</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
