@@ -42,8 +42,10 @@ const obtenerRegistrosPagosDetalladoXPlanilla = (req,res)=>{
     const id_planilla = req.params.id_planilla
     planilla.obtenerRegistrosPagosDetalladoXPlanilla(id_planilla,(err,results,filed)=>{
         if(err){
+            console.log(err)
             res.json(err)
         }else{
+            console.log(err)
             res.json(results)
         }
     })

@@ -7,11 +7,7 @@ const generalRoutes = require('./routes/generalRoutes');
 const session = require('express-session');
 
 
-app.use(session({
-    secret: '123', // Cambia esto por una clave secreta real
-    resave: false,
-    saveUninitialized: true
-}));
+
 
 
 //settings and settings vars
@@ -26,7 +22,11 @@ app.use(express.static('src'));
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));
 app.use(bodyParser.json());
-
+app.use(session({
+    secret: '123', // Cambia esto por una clave secreta real
+    resave: false,
+    saveUninitialized: true
+}));
 
 //routes
 app.use('/',generalRoutes);

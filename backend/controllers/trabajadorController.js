@@ -33,7 +33,29 @@ const obtenerTrabajadoresXRL =(req,res)=>{
         }
     })
 }
+const obtenerTrabajadoresXFacultad = (req,res)=>{
+    const id = req.params.id
+    trabajador.obtenerTrabajadoresXFacultad(id,(err,result,filed)=>{
+        if(err){
+            console.log("Error al obtener trabajadores por Facultad")
+            res.json("Error al obtener trabajadores por Facultad");
+        }else{
+            res.json({respuesta: result})
+        }
+    })
+}
+const obtenerTrabajador = (req,res)=>{
+    const idTrabajador = req.params.idTrabajador
+    trabajador.obtenerTrabajador(idTrabajador,(err,result,filed)=>{
+        if(err){
+            res.json("Error al obtener trabajador por id");
+            console.log(err);
+        }else{
+            res.json({respuesta: result})
+        }
+    })
+}
 //Exportando funciones
 module.exports = {
-   index,nuevoTrabajador,obtenerTrabajadoresXRL
+   index,nuevoTrabajador,obtenerTrabajadoresXRL,obtenerTrabajador,obtenerTrabajadoresXFacultad
 }

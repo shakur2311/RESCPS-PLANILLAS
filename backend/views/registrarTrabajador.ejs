@@ -11,18 +11,28 @@
     <div id="registrarTrabajadorContainer" class="mx-auto w-50" style="margin-top:100px;">
         <h2>REGISTRAR TRABAJADOR</h2>
         <form action="" onsubmit="guardarTrabajador(event)">
-            <div class="form-group row">
+            <div class="form-group row" style="display: none;">
                 <div class="col-sm-3">
                     <label for="inputRegimenLaboral" class="mb-1">Régimen Laboral</label>
                     <select name="inputRegimenLaboral" id="inputRegimenLaboral" class="form-select" onchange="onChangeRegimenLaboral()" required>
-                        <option value="0">--SELECCIONE--</option>
-                        <% for (let x in regimenlaboral) { %>
+                        <!-- <option value="0">--SELECCIONE--</option> -->
+                        <!-- <% for (let x in regimenlaboral) { %>
                             <option value="<%= regimenlaboral[x].idRL %>"><%= regimenlaboral[x].nombreRL %></option>
-                        <% } %>    
+                        <% } %>  -->   
+                        <option value="1">ACTIVOS</option>
                     </select>
                 </div>
             </div>
-
+            <div class="form-group row my-3">
+                <div class="col-sm-2">
+                    <label for="inputFacultad">Facultad</label>
+                    <select name="inputFacultad" id="inputFacultad" class="form-select">
+                        <% for (let x in facultad){ %>
+                            <option value="<%= facultad[x].id %>"><%= facultad[x].abrev_facu %></option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
             <div class="form-group row my-3">
                 <div class="col-sm-2">
                     <label for="inputCodigo" class="mb-1">Código</label>

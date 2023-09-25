@@ -34,8 +34,13 @@ const login = async (req,res)=>{
 
 const logout = (req,res)=>{
     try {
-        req.session.usuario 
-        res.render('./login.ejs');
+        req.session.destroy(err=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.redirect('/login')
+            }
+        }) 
     } catch (error) {
         console.log(error);   
     }

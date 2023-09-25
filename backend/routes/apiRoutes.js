@@ -21,13 +21,16 @@ router.get('/obtenerRegistrosPagosConsolidado/:id_planilla',planillaController.o
 router.post('/nueva-planilla',planillaController.nuevaPlanilla)
 
 router.get('/obtenerTrabajadores',trabajadorController.index);
+router.get('/obtenerTrabajador/:idTrabajador',trabajadorController.obtenerTrabajador);
 router.get('/obtenerTrabajadoresXRL/:idRL',trabajadorController.obtenerTrabajadoresXRL);
+router.get('/obtenerTrabajadoresXFacultad/:id',trabajadorController.obtenerTrabajadoresXFacultad);
 router.post('/nuevoTrabajador',trabajadorController.nuevoTrabajador);
 router.post('/verificarMontoTope',registropagoController.verificarMontoTope)
 
 
 router.post('/registradorPago',registropagoController.guardarNuevoRegistroPago);
-
-
+router.post('/editarRegistroPago',registropagoController.editarRegistroPago);
+router.get('/obtenerRegistroPago/:idRegistroPago',registropagoController.obtenerRegistroPago)
+router.get('/eliminarRegistroPago/:idRegistroPago',registropagoController.eliminarRegistroPago)
 
 module.exports = router;

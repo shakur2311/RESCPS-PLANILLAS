@@ -8,6 +8,8 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .dataTables_wrapper .dataTables_filter {
             float: right;
@@ -45,19 +47,20 @@
                     <table id="planillaDetalleTable" class="display table table-striped" style="width:100%; overflow-y: auto;">
                         <thead>
                             <tr>
-                                <th>N°</th>
-                                <th>N° OF. URH</th>
-                                <th>Meta/Of. Circ</th>
-                                <th>Apellido Paterno</th>
-                                <th>Apellido Materno</th>
-                                <th>Apellido Nombres</th>
-                                <th>Fecha Desde</th>
-                                <th>Fecha Hasta</th>
-                                <th>Cargo/Curso/Dia y Hora del Serv.</th>
-                                <th>Monto Bruto</th>
-                                <th>Dscto. 5ta Cat.</th>
-                                <th>Monto Abonar</th>
-                                <th>Fecha de Registro</th>
+                                <th class="text-center">Código</th>
+                                <th class="text-center">N° OF. URH</th>
+                                <th class="text-center">Meta</th>
+                                <th class="text-center">Apellido Paterno</th>
+                                <th class="text-center">Apellido Materno</th>
+                                <th class="text-center">Apellido Nombres</th>
+                                <th class="text-center">Fecha Desde</th>
+                                <th class="text-center">Fecha Hasta</th>
+                                <th class="text-center">Cargo/Curso/Dia y Hora del Serv.</th>
+                                <th class="text-center">Monto Bruto</th>
+                                <th class="text-center">Dscto. 5ta Cat.</th>
+                                <th class="text-center">Monto Abonar</th>
+                                <th class="text-center">Fecha de Registro</th>
+                                <th class="text-center">Opciones</th>
                             </tr>
                         </thead>
                         <tbody id="bodyRegistrosPagosDetallado" style="width:100%;">
@@ -73,13 +76,13 @@
                     <table id="planillaConsolidadoTable" class="display table table-striped" style="width:100%; overflow-y: auto;">
                         <thead>
                             <tr>
-                                <th>Código</th>
-                                <th>Nombres</th>
-                                <th>Apellido Paterno</th>
-                                <th>Apellido Materno</th>
-                                <th>Monto Bruto</th>
-                                <th>Dscto 5ta.</th>
-                                <th>Monto a Abonar</th>
+                                <th class="text-center">Código</th>
+                                <th class="text-center">Nombres</th>
+                                <th class="text-center">Apellido Paterno</th>
+                                <th class="text-center">Apellido Materno</th>
+                                <th class="text-center">Monto Bruto</th>
+                                <th class="text-center">Dscto 5ta.</th>
+                                <th class="text-center">Monto a Abonar</th>
                         </thead>
                         <tbody id="bodyRegistrosPagosConsolidado" style="width:100%;">
                             
@@ -110,12 +113,20 @@
                         <input type="text" class="form-control mb-3"
                         id="inputNOFICURH" required>
 
-                        <label for="inputFACDEP">FAC./Dep:</label>
-                        <input type="text" class="form-control mb-3"
-                        id="inputFACDEP" required>
-
                         <div class="form-group row">
                             <div class="col-sm-7">
+                                <label for="inputFacultad">Facultad</label>
+                                <select class="form-select mb-3"
+                                id="inputFacultad" onchange="onChangeFacultad()">
+                                    <option value="0">-Seleccione-</option>
+                                    <% for (let facultad in facultadList){ %>
+                                        <option value="<%= facultadList[facultad].id %>">
+                                            <%= facultadList[facultad].abrev_facu %>
+                                        </option>
+                                    <% }%>
+                                </select>
+                            </div>
+                            <!-- <div class="col-sm-7">
                                 <label for="inputRegimenLaboral2">Régimen Laboral:</label>
                                 <select class="form-select mb-3"
                                 id="inputRegimenLaboral2" onchange="onChangeRegimenLaboral2()">
@@ -126,7 +137,7 @@
                                         </option>
                                     <% }%>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="col-sm-5">
                                 <label for="inputCodigo2">Código:</label>
                                 <input type="text" class="form-control mb-3"
@@ -150,28 +161,37 @@
                             </div>
                         </div>
 
-                        <label for="inputSIAF">SIAF:</label>
-                        <input type="text" class="form-control mb-3"
-                        id="inputSIAF" required>
-
-                        <div class="form-group row mt-3">
+                        <div class="form-group row mt-3 justify-content-between">
+                            <div class="col-sm-4">
+                                <label for="inputCB5TA" class="form-check-label">Aplicar Dscto</label>
+                                <input type="checkbox" class="form-check-input mb-3" id="inputCB5TA" name="inputCB5TA">
+                            </div>                          
+                            <div class="col-sm-4">
+                                <label for="inputCB8" class="form-check-label">Dscto 8%</label>
+                                <input type="checkbox" class="form-check-input mb-3" id="inputCB8" value="0.08" name="inputCB8">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="inputCB14" class="form-check-label">Dscto 14%</label>
+                                <input type="checkbox" class="form-check-input mb-3" id="inputCB14" value="0.14" name="inputCB14">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
                             <div class="col-sm-6">
-                                <label for="inputMontoBruto">Monto Bruto:</label>
+                                <label for="inputMontoBruto">MontoBruto</label>
                                 <input type="text" class="form-control mb-3"
                                 id="inputMontoBruto" onchange="onChangeMontoBruto()" required>
                             </div>
                             <div class="col-sm-6">
                                 <label for="inputDscto5ta">Dscto. 5ta:</label>
                                 <input type="text" class="form-control mb-3"
-                                id="inputDscto5ta">
+                                id="inputDscto5ta" readonly="true">
                             </div>
                         </div>
-
                         
 
                         <label for="inputMontoAbonar">Monto a Abonar:</label>
                         <input type="text" class="form-control mb-3"
-                        id="inputMontoAbonar">
+                        id="inputMontoAbonar" readonly="true">
 
                     </div>
                     <div class="col-sm-6">
@@ -182,10 +202,6 @@
                         <label for="inputMeta">Meta/Of. Circ:</label>
                         <input type="text" class="form-control mb-3"
                         id="inputMeta" required>
-
-                        <label for="inputNum">N°:</label>
-                        <input type="text" class="form-control mb-3"
-                        id="inputNum">
 
                         <label for="inputApeYNom">Apellidos y Nombres:</label>
                         <select name="inputApeYNom" class="form-control mb-3" id="inputApeYNom"
@@ -208,6 +224,103 @@
         </div>
         </div>
     </div>
+    <div class="modal fade" id="editarRegistroPagoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Registro de Pago</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form onsubmit="guardarEditarRegistroPago(event)">
+                <input type="text" style="display:none;" id="inputIdEditarRegistroPago">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="inputTrabajadorEditarRegistroPago">Trabajador</label>
+                        <input type="text" id="inputTrabajadorEditarRegistroPago" class="form-control my-3" 
+                        name="inputTrabajadorEditarRegistroPago" readonly>
+                        
+                        <input type="text" id="inputIdTrabajadorOculto" style="display:none;">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputPlanillaEditarRegistroPago">Planilla</label>
+                        <input type="text" id="inputPlanillaEditarRegistroPago" class="form-control my-3" 
+                        name="inputPlanillaEditarRegistroPago" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="inputNOFICURHEditarRegistroPago">N OFICURH</label>
+                        <input type="text" id="inputNOFICURHEditarRegistroPago" class="form-control my-3" 
+                        name="inputNOFICURHEditarRegistroPago">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputPeriodoPagoDesdeEditarRegistroPago">Periodo Pagar Desde</label>
+                        <input type="date" id="inputPeriodoPagoDesdeEditarRegistroPago" class="form-control my-3" 
+                        name="inputPeriodoPagoDesdeEditarRegistroPago">
+                    </div>
+                
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="inputNOFICFACEditarRegistroPago">N° OFIC FAC</label>
+                        <input type="text" id="inputNOFICFACEditarRegistroPago" class="form-control my-3"
+                        name="inputNOFICFACEditarRegistroPago">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="inputMetaEditarRegistroPago">Meta</label>
+                        <input type="text" id="inputMetaEditarRegistroPago" class="form-control my-3"
+                        name="inputMetaEditarRegistroPago">
+                    </div>
+                    <div class="col-sm-6">                      
+                        <label for="inputPeriodoPagoHastaEditarRegistroPago">Periodo Pagar Hasta</label>
+                        <input type="date" id="inputPeriodoPagoHastaEditarRegistroPago" class="form-control my-3" 
+                        name="inputPeriodoPagoHastaEditarRegistroPago">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label for="inputCB5TAEditarRegistroPago" class="form-check-label">Dscto</label>
+                        <input type="checkbox" class="form-check-input" id="inputCB5TAEditarRegistroPago" name="inputCB5TAEditarRegistroPago">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="inputMontoBrutoEditarRegistroPago">Monto Bruto</label>
+                        <input type="text" id="inputMontoBrutoEditarRegistroPago" class="form-control my-3"
+                        name="inputMontoBrutoEditarRegistroPago" onchange="onChangeMontoBrutoEditar()">
+                    </div>
+                    <div class="col-sm-3">                       
+                        <label for="inputDscto5taEditarRegistroPago">Dscto 5ta</label>
+                        <input type="text" id="inputDscto5taEditarRegistroPago" class="form-control my-3"
+                        name="inputDscto5taEditarRegistroPago" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="inputMontoAbonarEditarRegistroPago">MontoAbonar</label>
+                        <input type="text" id="inputMontoAbonarEditarRegistroPago" class="form-control my-3"
+                        name="inputMontoAbonarEditarRegistroPago" readonly>
+                    </div>
+                </div>      
+
+                <div class="form-group row">
+                    
+                    <div class="col-sm-6">
+                        <label for="inputDetalleEditarRegistroPago">Cargo/Cursos/Indicador Dia y Hora del Serv.</label>
+                        <textarea name="" id="inputDetalleEditarRegistroPago" cols="30" rows="5" class="form-control mb-3"></textarea>
+                    </div>
+                </div>
+
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <script src="/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>

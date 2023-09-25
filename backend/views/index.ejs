@@ -23,18 +23,21 @@
 </head>
 <body>
     <div class="p-5 w-75 mx-auto align-items-center d-flex flex-column" style="margin-top:50px;">
+        <a class="btn btn-danger" style="margin-left:auto;" href="/logout">Cerrar Sesión</a>
         <h2 class="text-center mb-5">RESCPS</h2>
         <% if(rol==1) { %>
-            <a class="btn btn-primary px-5 mb-5" style="width:300px;" href="./registrar-trabajador">REGISTRAR TRABAJADOR</a>
+            <div class="botones mx-auto">
+                <a class="btn btn-primary px-5" style="width:250px;" href="./registrar-trabajador">REGISTRAR TRABAJADOR</a>
+                <a class="btn btn-primary px-5" style="width:250px;" href="./visualizador-planillas">VISUALIZADOR DE PLANILLAS</a>
+            </div>
             <div class="table-responsive">
                 <table class="display table table-striped w-100" id="trabajadoresTabla" style="width:100%; overflow-y: auto;">
                     <thead>
                         <tr>
-                            <th>Regimen Laboral</th>
-                            <th>Código</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Opciones</th>
+                            <th class="text-center">Regimen Laboral</th>
+                            <th class="text-center">Código</th>
+                            <th class="text-center">Nombres</th>
+                            <th class="text-center">Apellidos</th>
                         </tr>
                     </thead>
                     <tbody id="dataBodyTrabajadoresTabla">
@@ -48,6 +51,42 @@
         <% } else { %>
             <a class="btn btn-primary px-5 " style="width:300px; margin-top:100px;" href="./visualizador-planillas">VISUALIZADOR DE PLANILLAS</a>
         <% } %>
+
+        <!-- Modales -->
+        <div class="modal fade" id="editarTrabajadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Editar trabajador</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <label for="inputRegimenLaboralEditar">Regimen Laboral</label>
+                    <select name="inputRegimenLaboralEditar" id="inputRegimenLaboralEditar" class="form-select"></select>
+                    
+                    <label for="inputCodigoEditar">Código</label>
+                    <input type="text" class="form-control" id="inputCodigoEditar" name="inputCodigoEditar">
+
+                    <label for="inputApepatEditar">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="inputApepatEditar" name="inputApepatEditar">
+                    
+                    <label for="inputApematEditar">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="inputApematEditar" name="inputApematEditar">
+
+                    <label for="inputNombresEditar">Nombres</label>
+                    <input type="text" class="form-control" id="inputNombresEditar" name="inputNombresEditar">
+
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
     <script src="/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>

@@ -17,7 +17,11 @@ const load = {
     categoria: (fun)=>{
         const sql = `SELECT * FROM categoria`
         connection.query(sql,fun)
-    }
+    },
+    facultad: (fun)=>{ 
+        const sql = `SELECT * FROM facultad`
+        connection.query(sql,fun)
+    } 
 
 }
 

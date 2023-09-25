@@ -41,11 +41,12 @@ const trabajador = {
         }else{
             datosTrabajador.inputCategoria2 = `'${datosTrabajador.inputCategoria2}'`
         }
-        const sql = `INSERT INTO Trabajadores(id_regimen_laboral,
+        
+        const sql = `INSERT INTO Trabajadores(id_facultad,id_regimen_laboral,
                      codigo,apepat,apemat,nombres,id_condicion_laboral,
                      id_nivel_remunerativo,id_categoria,dedicacion,nivelremunerativo,
                      sueldoBruto,categoria1,categoria2) 
-                     VALUES(${datosTrabajador.inputRegimenLaboral},'${datosTrabajador.inputCodigo}','${datosTrabajador.inputApepat}',
+                     VALUES(${datosTrabajador.inputFacultad},${datosTrabajador.inputRegimenLaboral},'${datosTrabajador.inputCodigo}','${datosTrabajador.inputApepat}',
                      '${datosTrabajador.inputApemat}','${datosTrabajador.inputNombres}',${datosTrabajador.inputCondicionLaboral},
                      ${datosTrabajador.inputNivelRemunerativo},${datosTrabajador.inputCategoria},${datosTrabajador.inputDedicacion},
                      ${datosTrabajador.inputNivelRemunerativo1},${datosTrabajador.inputSueldoBruto},${datosTrabajador.inputCategoria1},
@@ -55,7 +56,15 @@ const trabajador = {
     obtenerTrabajadoresXRL: (idRL,fun)=>{
         const sql = `SELECT * FROM trabajadores where id_regimen_laboral=${idRL}`;
         connection.query(sql,fun);
-    }
+    },
+    obtenerTrabajadoresXFacultad: (id,fun)=>{
+        const sql = `SELECT * FROM trabajadores where id_facultad=${id}`;
+        connection.query(sql,fun);
+    },
+    obtenerTrabajador: (idTrabajador,fun)=>{
+        const sql = `SELECT * FROM trabajadores where id=${idTrabajador}`;
+        connection.query(sql,fun);
+    }    
  
 }
 
