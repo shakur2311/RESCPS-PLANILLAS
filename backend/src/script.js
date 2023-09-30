@@ -318,6 +318,7 @@ const cargarRegistrosPagosDetallado = ()=>{
                          <td class="text-center">${registro.detalle}</td>
                          <td class="text-center">${registro.montoBruto}</td>
                          <td class="text-center">${registro.dsc5ta}</td>
+                         <td class="text-center">${registro.dsctoJudicial}</td>
                          <td class="text-center">${registro.montoAbonar}</td>
                          <td class="text-center">${registro.fecha_creacion}</td>
                          <td class="text-center"><button class="btn btn-warning" data-bs-toggle="modal" style="float:left;"
@@ -337,7 +338,7 @@ const cargarRegistrosPagosDetallado = ()=>{
                         text: 'Exportar a Excel',
                         filename: 'RegistrosPagoDetalladoExcel',
                         exportOptions: {
-                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
+                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
                         }
                     },
                     {
@@ -345,7 +346,7 @@ const cargarRegistrosPagosDetallado = ()=>{
                         text: 'Exportar a PDF',
                         filename: 'RegistrosPagoDetalladoPDF',
                         exportOptions: {
-                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
+                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
                         }
                     }
                 ],
@@ -363,7 +364,7 @@ const cargarRegistrosPagosDetallado = ()=>{
                         emptyTable: "No hay datos disponibles en la tabla" 
                 },
                 order: [
-                    [12,'desc']
+                    [13,'desc']
                 ]
             } );
         } );
@@ -486,7 +487,9 @@ const calcularDscto5Ta = ()=>{
         dsct5ta = parseFloat(document.getElementById("inputCB8").value);
     }else if(document.getElementById("inputCB14").checked){
         dsct5ta = parseFloat(document.getElementById("inputCB14").value);
-    }
+    }else if(document.getElementById("inputCB17").checked){
+        dsct5ta = parseFloat(document.getElementById("inputCB17").value);
+    }  
     const inputMontoBruto =  parseFloat(document.getElementById("inputMontoBruto").value);
     document.getElementById("inputDscto5ta").value=(inputMontoBruto*dsct5ta).toFixed(2); 
     const inputDscto5ta = parseFloat(document.getElementById("inputDscto5ta").value);
@@ -552,16 +555,18 @@ const guardarRegistroPago = (e)=>{
     const inputApeYNom = document.getElementById("inputApeYNom").value
     const id_trabajador = inputApeYNom.split('.')[0]
     const inputDetalle = document.getElementById("inputDetalle").value
+    const inputDsctoJudic = document.getElementById("inputDsctoJudic").value
+
     if(inputNOFICURH!="" && inputFACDEP!="" && inputPeriodoPagoDesde!="" && inputPeriodoPagoHasta!=""
     && inputMontoBruto!="" && inputDscto5ta!="" && inputMontoAbonar!=""
-    && inputNOFICFAC!="" && inputMeta!="" && id_trabajador!="" && inputDetalle!=""){
+    && inputNOFICFAC!="" && inputMeta!="" && id_trabajador!="" && inputDetalle!="" && inputDsctoJudic!=""){
         fetch(`/api/registradorPago`,{
             method:'POST',
             headers: {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({id_planilla,inputNOFICURH,inputFACDEP,inputPeriodoPagoDesde,inputPeriodoPagoHasta,
-                inputMontoBruto,inputDscto5ta,inputMontoAbonar,inputNOFICFAC,inputMeta,id_trabajador,inputDetalle})
+                inputMontoBruto,inputDscto5ta,inputMontoAbonar,inputNOFICFAC,inputMeta,id_trabajador,inputDetalle,inputDsctoJudic})
         }).then(res=>res.json())
         .then(data=>{
             if(data.respuesta == "registro de pago agregado"){
@@ -647,6 +652,7 @@ const abrirModalEditarRegistroPago = (idRegistroPago)=>{
         document.getElementById("inputNOFICFACEditarRegistroPago").value = data[0].N_OFICFAC
         document.getElementById("inputMetaEditarRegistroPago").value = data[0].meta
         document.getElementById("inputDetalleEditarRegistroPago").value = data[0].detalle
+        document.getElementById("inputDsctoJudicEditarRegistroPago").value = data[0].dsctoJudicial
     })
     .catch(err=>{console.log(err)
     console.log("Error al obtener datos de registro de pago")});
@@ -663,10 +669,11 @@ const guardarEditarRegistroPago = (e)=>{
     const inputNOFICFACEditarRegistroPago = document.getElementById("inputNOFICFACEditarRegistroPago").value
     const inputMetaEditarRegistroPago = document.getElementById("inputMetaEditarRegistroPago").value
     const inputDetalleEditarRegistroPago = document.getElementById("inputDetalleEditarRegistroPago").value
+    const inputDsctoJudicEditarRegistroPago = document.getElementById("inputDsctoJudicEditarRegistroPago").value
     const datosEditarRegistroPago = {inputIdEditarRegistroPago,inputNOFICURHEditarRegistroPago,
         inputPeriodoPagoDesdeEditarRegistroPago,inputPeriodoPagoHastaEditarRegistroPago,
         inputMontoBrutoEditarRegistroPago,inputDscto5taEditarRegistroPago,inputMontoAbonarEditarRegistroPago,
-        inputNOFICFACEditarRegistroPago,inputMetaEditarRegistroPago,inputDetalleEditarRegistroPago}
+        inputNOFICFACEditarRegistroPago,inputMetaEditarRegistroPago,inputDetalleEditarRegistroPago,inputDsctoJudicEditarRegistroPago}
     fetch(`/api/editarRegistroPago`,{
         method:'POST',
         headers: {
@@ -699,11 +706,18 @@ const guardarEditarRegistroPago = (e)=>{
     })
 }
 const calcularDscto5TaEditarRegistroPago = ()=>{
-    const dsct5ta = 0.08;
+    let dsct5ta = 0;
+    if(document.getElementById("inputCB8EditarRegistroPago").checked){
+        dsct5ta = parseFloat(document.getElementById("inputCB8EditarRegistroPago").value);
+    }else if(document.getElementById("inputCB14EditarRegistroPago").checked){
+        dsct5ta = parseFloat(document.getElementById("inputCB14EditarRegistroPago").value);
+    }else if(document.getElementById("inputCB17EditarRegistroPago").checked){
+        dsct5ta = parseFloat(document.getElementById("inputCB17EditarRegistroPago").value);
+    }
     const inputMontoBruto = document.getElementById("inputMontoBrutoEditarRegistroPago").value
-    document.getElementById("inputDscto5taEditarRegistroPago").value=inputMontoBruto*dsct5ta;
+    document.getElementById("inputDscto5taEditarRegistroPago").value=(inputMontoBruto*dsct5ta).toFixed(2);
     const inputDscto5ta = document.getElementById("inputDscto5taEditarRegistroPago").value;
-    document.getElementById("inputMontoAbonarEditarRegistroPago").value=inputMontoBruto-inputDscto5ta;
+    document.getElementById("inputMontoAbonarEditarRegistroPago").value=(inputMontoBruto-inputDscto5ta).toFixed(2);
 }
 const onChangeMontoBrutoEditar = ()=>{
     const inputMontoBruto = document.getElementById("inputMontoBrutoEditarRegistroPago").value
@@ -736,6 +750,7 @@ const onChangeMontoBrutoEditar = ()=>{
     .catch(err=>console.log(err));
 }
 const limpiarCamposRegistroPago = ()=>{
+    document.getElementById("inputApeYNom").value=""
     document.getElementById("inputNOFICURH").value=""
     document.getElementById("inputFacultad").value=0
     /* document.getElementById("inputFACDEP").value="" */
@@ -749,5 +764,31 @@ const limpiarCamposRegistroPago = ()=>{
     document.getElementById("inputNOFICFAC").value=""
     document.getElementById("inputMeta").value=""
     document.getElementById("inputDetalle").value=""
+    document.getElementById("inputDsctoJudic").value=""
     /* onChangeRegimenLaboral2(); */
+}
+const onchangeDsctoJudicial = ()=>{
+    let dsctoJudicial = document.getElementById("inputDsctoJudic").value
+    let montoAbonar = document.getElementById("inputMontoAbonar").value
+    let montoBruto = document.getElementById("inputMontoBruto").value
+    let dscto5ta = document.getElementById("inputDscto5ta").value
+    if(dsctoJudicial!="" && montoBruto!=""){
+        document.getElementById("inputMontoAbonar").value = (parseFloat(montoAbonar)-parseFloat(dsctoJudicial)).toFixed(2)
+    }else if(dsctoJudicial=""){
+        document.getElementById("inputMontoAbonar").value = (parseFloat(montoBruto)-parseFloat(dscto5ta)).toFixed(2)
+    }
+
+}
+
+const onchangeDsctoJudicialEditar = ()=>{
+    let dsctoJudicial = document.getElementById("inputDsctoJudicEditarRegistroPago").value
+    let montoAbonar = document.getElementById("inputMontoAbonarEditarRegistroPago").value
+    let montoBruto = document.getElementById("inputMontoBrutoEditarRegistroPago").value
+    let dscto5ta = document.getElementById("inputDscto5taEditarRegistroPago").value
+    if(dsctoJudicial!="" && montoBruto!=""){
+        document.getElementById("inputMontoAbonarEditarRegistroPago").value = (parseFloat(montoAbonar)-parseFloat(dsctoJudicial)).toFixed(2)
+    }else if(dsctoJudicial=""){
+        document.getElementById("inputMontoAbonarEditarRegistroPago").value = (parseFloat(montoBruto)-parseFloat(dscto5ta)).toFixed(2)
+    }
+
 }

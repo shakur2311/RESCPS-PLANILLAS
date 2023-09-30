@@ -27,10 +27,10 @@ const guardarNuevoRegistroPago = (req,res)=>{
     const inputMeta = req.body.inputMeta
     const id_trabajador = req.body.id_trabajador
     const inputDetalle = req.body.inputDetalle
+    const inputDsctoJudic = req.body.inputDsctoJudic
     const datos ={
         id_planilla,
         inputNOFICURH,
-        inputFACDEP,
         inputPeriodoPagoDesde,
         inputPeriodoPagoHasta,
         inputMontoBruto,
@@ -39,7 +39,8 @@ const guardarNuevoRegistroPago = (req,res)=>{
         inputNOFICFAC,
         inputMeta,
         id_trabajador,
-        inputDetalle
+        inputDetalle,
+        inputDsctoJudic
     }
     registropago.guardarNuevoRegistroPago(datos,(err,result,filed)=>{
         if(err){
@@ -82,10 +83,11 @@ const editarRegistroPago = (req,res)=>{
     const inputNOFICFACEditarRegistroPago = req.body.datosEditarRegistroPago.inputNOFICFACEditarRegistroPago;
     const inputMetaEditarRegistroPago = req.body.datosEditarRegistroPago.inputMetaEditarRegistroPago;
     const inputDetalleEditarRegistroPago = req.body.datosEditarRegistroPago.inputDetalleEditarRegistroPago;
+    const inputDsctoJudicEditarRegistroPago = req.body.datosEditarRegistroPago.inputDsctoJudicEditarRegistroPago;
     const datos = {
         inputIdEditarRegistroPago,inputNOFICURHEditarRegistroPago,inputPeriodoPagoDesdeEditarRegistroPago,
         inputPeriodoPagoHastaEditarRegistroPago,inputMontoBrutoEditarRegistroPago,inputDscto5taEditarRegistroPago,inputMontoAbonarEditarRegistroPago,
-        inputNOFICFACEditarRegistroPago,inputMetaEditarRegistroPago,inputDetalleEditarRegistroPago}
+        inputNOFICFACEditarRegistroPago,inputMetaEditarRegistroPago,inputDetalleEditarRegistroPago,inputDsctoJudicEditarRegistroPago}
     registropago.editarRegistroPago(datos,(err,result,filed)=>{ 
         if(err){
             res.json("Error al editar registro de pago")

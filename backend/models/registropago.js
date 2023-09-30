@@ -12,11 +12,11 @@ const registropago = {
     },
     guardarNuevoRegistroPago: (datos,fun)=>{
         const query = `INSERT INTO registrospagos(id_trabajador,id_planilla,N_OFICURH,periodo_pagar_desde,
-            periodo_pagar_hasta,montoBruto,dsc5ta,montoAbonar,N_OFICFAC,meta,detalle) VALUES(
+            periodo_pagar_hasta,montoBruto,dsc5ta,montoAbonar,N_OFICFAC,meta,detalle,dsctoJudicial) VALUES(
                 '${datos.id_trabajador}','${datos.id_planilla}','${datos.inputNOFICURH}',
                 '${datos.inputPeriodoPagoDesde}','${datos.inputPeriodoPagoHasta}','${datos.inputMontoBruto}',
                 '${datos.inputDscto5ta}','${datos.inputMontoAbonar}','${datos.inputNOFICFAC}','${datos.inputMeta}',
-                '${datos.inputDetalle}')`;
+                '${datos.inputDetalle}','${datos.inputDsctoJudic}')`;
         connection.query(query, fun);
     },
     obtenerRegistroPago:(idRegistroPago,fun)=>{
@@ -32,7 +32,7 @@ const registropago = {
         const query = `UPDATE registrospagos set N_OFICURH='${datos.inputNOFICURHEditarRegistroPago}',
         periodo_pagar_desde='${datos.inputPeriodoPagoDesdeEditarRegistroPago}',periodo_pagar_hasta='${datos.inputPeriodoPagoHastaEditarRegistroPago}',
         montoBruto='${datos.inputMontoBrutoEditarRegistroPago}',dsc5ta='${datos.inputDscto5taEditarRegistroPago}',montoAbonar='${datos.inputMontoAbonarEditarRegistroPago}',
-        N_OFICFAC='${datos.inputNOFICFACEditarRegistroPago}',meta='${datos.inputMetaEditarRegistroPago}',detalle='${datos.inputDetalleEditarRegistroPago}' 
+        N_OFICFAC='${datos.inputNOFICFACEditarRegistroPago}',meta='${datos.inputMetaEditarRegistroPago}',detalle='${datos.inputDetalleEditarRegistroPago}',dsctoJudicial='${datos.inputDsctoJudicEditarRegistroPago}' 
         WHERE id=${datos.inputIdEditarRegistroPago}`;
         connection.query(query, fun);
     }

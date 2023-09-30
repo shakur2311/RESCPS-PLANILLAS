@@ -58,6 +58,7 @@
                                 <th class="text-center">Cargo/Curso/Dia y Hora del Serv.</th>
                                 <th class="text-center">Monto Bruto</th>
                                 <th class="text-center">Dscto. 5ta Cat.</th>
+                                <th class="text-center">Dscto. Judicial</th>
                                 <th class="text-center">Monto Abonar</th>
                                 <th class="text-center">Fecha de Registro</th>
                                 <th class="text-center">Opciones</th>
@@ -162,17 +163,21 @@
                         </div>
 
                         <div class="form-group row mt-3 justify-content-between">
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <label for="inputCB5TA" class="form-check-label">Aplicar Dscto</label>
                                 <input type="checkbox" class="form-check-input mb-3" id="inputCB5TA" name="inputCB5TA">
                             </div>                          
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <label for="inputCB8" class="form-check-label">Dscto 8%</label>
                                 <input type="checkbox" class="form-check-input mb-3" id="inputCB8" value="0.08" name="inputCB8">
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <label for="inputCB14" class="form-check-label">Dscto 14%</label>
                                 <input type="checkbox" class="form-check-input mb-3" id="inputCB14" value="0.14" name="inputCB14">
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="inputCB17" class="form-check-label">Dscto 17%</label>
+                                <input type="checkbox" class="form-check-input mb-3" id="inputCB17" value="0.17" name="inputCB17">
                             </div>
                         </div>
                         <div class="form-group row mb-3">
@@ -186,12 +191,15 @@
                                 <input type="text" class="form-control mb-3"
                                 id="inputDscto5ta" readonly="true">
                             </div>
+                            <div class="col-sm-6">
+                                <label for="inputMontoAbonar">Monto a Abonar:</label>
+                                <input type="text" class="form-control mb-3"
+                                id="inputMontoAbonar" readonly="true">
+                            </div>
                         </div>
                         
 
-                        <label for="inputMontoAbonar">Monto a Abonar:</label>
-                        <input type="text" class="form-control mb-3"
-                        id="inputMontoAbonar" readonly="true">
+                        
 
                     </div>
                     <div class="col-sm-6">
@@ -210,6 +218,8 @@
                         <label for="inputDetalle">Cargo/Cursos/Indicador Dia y Hora del servicio:</label>
                         <textarea name="" id="inputDetalle" cols="30" rows="5" class="form-control mb-3"></textarea>
 
+                        <label for="inputDsctoJudic">Dscto. Judicial:</label>
+                        <input type="text" class="form-control mb-3" id="inputDsctoJudic" onchange="onchangeDsctoJudicial()">
 
                     </div>
                     
@@ -283,31 +293,53 @@
 
                 <div class="form-group row">
                     <div class="col-sm-2">
-                        <label for="inputCB5TAEditarRegistroPago" class="form-check-label">Dscto</label>
+                        <label for="inputCB5TAEditarRegistroPago" class="form-check-label">Aplicar Dscto</label>
                         <input type="checkbox" class="form-check-input" id="inputCB5TAEditarRegistroPago" name="inputCB5TAEditarRegistroPago">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="inputCB8EditarRegistroPago" class="form-check-label">Dscto 8%</label>
+                        <input type="checkbox" class="form-check-input" id="inputCB8EditarRegistroPago" 
+                        value="0.08" name="inputCB8EditarRegistroPago">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="inputCB14EditarRegistroPago" class="form-check-label">Dscto 14%</label>
+                        <input type="checkbox" class="form-check-input" id="inputCB14EditarRegistroPago"
+                        value="0.14" name="inputCB14EditarRegistroPago">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="inputCB17EditarRegistroPago" class="form-check-label">Dscto 17%</label>
+                        <input type="checkbox" class="form-check-input" id="inputCB17EditarRegistroPago"
+                        value="0.17" name="inputCB17EditarRegistroPago">
                     </div>
                     <div class="col-sm-3">
                         <label for="inputMontoBrutoEditarRegistroPago">Monto Bruto</label>
                         <input type="text" id="inputMontoBrutoEditarRegistroPago" class="form-control my-3"
                         name="inputMontoBrutoEditarRegistroPago" onchange="onChangeMontoBrutoEditar()">
                     </div>
-                    <div class="col-sm-3">                       
+             
+                </div>  
+                <div class="form-group row">
+                    <div class="col-sm-4">                       
                         <label for="inputDscto5taEditarRegistroPago">Dscto 5ta</label>
                         <input type="text" id="inputDscto5taEditarRegistroPago" class="form-control my-3"
                         name="inputDscto5taEditarRegistroPago" readonly>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label for="inputMontoAbonarEditarRegistroPago">MontoAbonar</label>
                         <input type="text" id="inputMontoAbonarEditarRegistroPago" class="form-control my-3"
                         name="inputMontoAbonarEditarRegistroPago" readonly>
                     </div>
-                </div>      
+                </div>    
 
                 <div class="form-group row">
                     
                     <div class="col-sm-6">
                         <label for="inputDetalleEditarRegistroPago">Cargo/Cursos/Indicador Dia y Hora del Serv.</label>
                         <textarea name="" id="inputDetalleEditarRegistroPago" cols="30" rows="5" class="form-control mb-3"></textarea>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputDsctoJudicEditarRegistroPago">Dscto. Judicial:</label>
+                        <input type="text" class="form-control mb-3" id="inputDsctoJudicEditarRegistroPago" onchange="onchangeDsctoJudicialEditar()">
                     </div>
                 </div>
 

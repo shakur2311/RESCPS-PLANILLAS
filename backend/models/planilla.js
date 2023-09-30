@@ -25,7 +25,7 @@ const planilla = {
     obtenerRegistrosPagosDetalladoXPlanilla: (idPlanilla,fun)=>{
         const query = `SELECT t.codigo,rp.id, rp.id_planilla,t.nombres,t.apepat,t.apemat,rp.N_OFICURH,rl.nombreRL,
         rp.periodo_pagar_desde,rp.periodo_pagar_hasta,rp.montoBruto,rp.dsc5ta,rp.montoAbonar, rp.N_OFICFAC,rp.meta,
-        rp.detalle,rp.fecha_creacion
+        rp.detalle,rp.dsctoJudicial,rp.fecha_creacion
         FROM registrospagos rp inner join trabajadores t on rp.id_trabajador=t.id
         inner join regimenlaboral rl on t.id_regimen_laboral = idRL 
         where rp.id_planilla=${idPlanilla} order by rp.id desc`
