@@ -389,6 +389,7 @@ const cargarRegistrosPagosConsolidado = ()=>{
                          <td class="text-center">${registro.nombres}</td>
                          <td class="text-center">${registro.montoBruto}</td>
                          <td class="text-center">${registro.dscto}</td>
+                         <td class="text-center">${registro.dsctoJudicial}</td>
                          <td class="text-center">${registro.montoAbonar}</td>`;
         bodyRegistrosPagos.appendChild(row);
         
@@ -402,7 +403,7 @@ const cargarRegistrosPagosConsolidado = ()=>{
                         text: 'Exportar a Excel',
                         filename: 'RegistrosPagoConsolidadoExcel',
                         exportOptions: {
-                            columns: [0,1,2,3,4,5,6] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
+                            columns: [0,1,2,3,4,5,6,7] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
                         }
                     },
                     {
@@ -410,7 +411,7 @@ const cargarRegistrosPagosConsolidado = ()=>{
                         text: 'Exportar a PDF',
                         filename: 'RegistrosPagoConsolidadoPDF',
                         exportOptions: {
-                            columns: [0,1,2,3,4,5,6] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
+                            columns: [0,1,2,3,4,5,6,7] // Especifica las columnas que deseas exportar (0, 1 y 2 en este ejemplo)
                         }
                     }
                 ],
@@ -555,7 +556,8 @@ const guardarRegistroPago = (e)=>{
     const inputApeYNom = document.getElementById("inputApeYNom").value
     const id_trabajador = inputApeYNom.split('.')[0]
     const inputDetalle = document.getElementById("inputDetalle").value
-    const inputDsctoJudic = document.getElementById("inputDsctoJudic").value
+    const inputDsctoJudicValor = document.getElementById("inputDsctoJudic").value;
+    let inputDsctoJudic = (inputDsctoJudicValor==="") ? 0 : inputDsctoJudicValor;
 
     if(inputNOFICURH!="" && inputFACDEP!="" && inputPeriodoPagoDesde!="" && inputPeriodoPagoHasta!=""
     && inputMontoBruto!="" && inputDscto5ta!="" && inputMontoAbonar!=""
@@ -669,7 +671,9 @@ const guardarEditarRegistroPago = (e)=>{
     const inputNOFICFACEditarRegistroPago = document.getElementById("inputNOFICFACEditarRegistroPago").value
     const inputMetaEditarRegistroPago = document.getElementById("inputMetaEditarRegistroPago").value
     const inputDetalleEditarRegistroPago = document.getElementById("inputDetalleEditarRegistroPago").value
-    const inputDsctoJudicEditarRegistroPago = document.getElementById("inputDsctoJudicEditarRegistroPago").value
+    const inputDsctoJudicEditarRegistroPagoValor = document.getElementById("inputDsctoJudicEditarRegistroPago").value
+    const inputDsctoJudicEditarRegistroPago = (inputDsctoJudicEditarRegistroPagoValor === "") ? 0 : inputDsctoJudicEditarRegistroPagoValor
+    
     const datosEditarRegistroPago = {inputIdEditarRegistroPago,inputNOFICURHEditarRegistroPago,
         inputPeriodoPagoDesdeEditarRegistroPago,inputPeriodoPagoHastaEditarRegistroPago,
         inputMontoBrutoEditarRegistroPago,inputDscto5taEditarRegistroPago,inputMontoAbonarEditarRegistroPago,

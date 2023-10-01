@@ -33,7 +33,7 @@ const planilla = {
     },
     obtenerRegistrosPagosConsolidadoXPlanilla: (idPlanilla,fun)=>{
         const query = `SELECT t.codigo,t.nombres,t.apepat,t.apemat,SUM(rp.montoBruto) montoBruto,SUM(rp.dsc5ta) dscto,
-        SUM(rp.montoAbonar) montoAbonar
+        SUM(rp.montoAbonar) montoAbonar, SUM(rp.dsctoJudicial) dsctoJudicial
         FROM registrospagos rp inner join trabajadores t on rp.id_trabajador=t.id
         where rp.id_planilla=${idPlanilla} GROUP BY id_trabajador`
         connection.query(query,fun)
